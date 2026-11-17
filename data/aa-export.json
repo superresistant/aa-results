@@ -1,0 +1,1715 @@
+{
+ "schema": "agentrambench/1",
+ "status": "preliminary",
+ "reproduce": {
+  "command": "git clone https://github.com/agentrambench/bench && cd bench && ./setup.sh && python3 hb.py quick && python3 export.py",
+  "minutes": 30,
+  "repo": "https://github.com/agentrambench/bench"
+ },
+ "raw_archive": "https://github.com/agentrambench/bench/releases/download/edition-2026-11/raw-2026-11.tar.zst",
+ "edition": "2026-11",
+ "frozen": "2026-11-16",
+ "generated": "2026-11-16T22:17:30+0100",
+ "bench_commit": "016cf65",
+ "llm": "local deterministic mock (Anthropic Messages / OpenAI Responses / Gemini generateContent); no real model",
+ "machine": {
+  "cpu": "Intel(R) Core(TM) i7-10700KF CPU @ 3.80GHz",
+  "cores": 16,
+  "ram_gib": 62.7,
+  "kernel": "7.0.0-43-generic",
+  "label": "dev desktop"
+ },
+ "sources": {
+  "task": "task-20261116-200219",
+  "crash": "crash-20261116-200258",
+  "fault": "fault-20261116-201017"
+ },
+ "sources_by_harness": {
+  "task": {
+   "aa": "task-20261116-200219"
+  },
+  "crash": {
+   "aa": "crash-20261116-200258"
+  },
+  "fault": {
+   "aa": "fault-20261116-201017"
+  }
+ },
+ "fleet_comparable": {
+  "n_agents": 50,
+  "hold_s": 3600
+ },
+ "harnesses": [
+  {
+   "id": "aa",
+   "name": "aa",
+   "version": "aa 1910537 (private build)",
+   "status": "measured",
+   "non_default_flags": []
+  },
+  {
+   "id": "cursor-cli",
+   "name": "Cursor CLI",
+   "status": "not_runnable_offline",
+   "reason": "requires a Cursor account; model traffic goes through Cursor's backend, a local endpoint is unreachable"
+  },
+  {
+   "id": "amp",
+   "name": "Amp",
+   "status": "not_runnable_offline",
+   "reason": "model traffic goes only through Amp's backend (no local base-URL override)"
+  },
+  {
+   "id": "warp",
+   "name": "Warp",
+   "status": "not_runnable_offline",
+   "reason": "agent runs against Warp's cloud backend (no local base-URL override)"
+  },
+  {
+   "id": "kiro",
+   "name": "Kiro / Amazon Q CLI",
+   "status": "not_runnable_offline",
+   "reason": "model traffic goes only through the AWS-hosted backend (no local base-URL override)"
+  }
+ ],
+ "metrics": [
+  {
+   "id": "task_anon_mib",
+   "axis": "resources",
+   "label": "Private RAM, one agent doing the fixed task (peak)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": true,
+   "note": "max over 4 Hz samples of cgroup memory.stat anon (private, not shared, no page cache), harness + its tool processes"
+  },
+  {
+   "id": "task_rss_mib",
+   "axis": "resources",
+   "label": "RSS peak, fixed task (includes shared pages)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false,
+   "note": "sum of RSS over the harness processes; counts shared library pages in full"
+  },
+  {
+   "id": "task_cpu_s",
+   "axis": "resources",
+   "label": "CPU time for the fixed task",
+   "unit": "s",
+   "better": "lower",
+   "headline": true,
+   "note": "cgroup cpu.stat usage_usec for the whole run"
+  },
+  {
+   "id": "task_first_request_s",
+   "axis": "resources",
+   "label": "Start-up: launch to first model request",
+   "unit": "s",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "idle_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per agent at the end of the idle hold (incl. terminal)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": true,
+   "note": "cgroup anon at the end of the hold / N, for the (N, hold_s) of the row; median over runs of that cell; TUIs in one tmux (counted); each agent first read ~320 KB of tool output"
+  },
+  {
+   "id": "idle_cpu_s_per_agent_hour",
+   "axis": "resources",
+   "label": "CPU per idle agent per hour",
+   "unit": "s/h",
+   "better": "lower",
+   "headline": true,
+   "note": "cgroup CPU consumed during the hold / N / hours"
+  },
+  {
+   "id": "idle_net_out_kib_per_agent_hour",
+   "axis": "governance",
+   "label": "Non-model network upload per idle agent per hour (lower bound)",
+   "unit": "KiB/h",
+   "better": "lower",
+   "headline": false,
+   "note": "bytes sent on non-loopback TCP sockets during the hold, ss sampling every 2 s (lower bound)"
+  },
+  {
+   "id": "disk_state_mib",
+   "axis": "resources",
+   "label": "On-disk state + caches for the whole fleet",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "first_request_kib",
+   "axis": "tokens",
+   "label": "First model request size (system prompt + tools)",
+   "unit": "KiB",
+   "better": "lower",
+   "headline": true,
+   "note": "bytes of the first model request body"
+  },
+  {
+   "id": "task_uncached_ktok",
+   "axis": "tokens",
+   "label": "Estimated uncached input tokens for the fixed task (bytes/4, ideal prefix cache)",
+   "unit": "ktok",
+   "better": "lower",
+   "headline": true,
+   "note": "request bytes / 4 minus an idealized prefix cache (1 KiB granularity); estimate, not a tokenizer"
+  },
+  {
+   "id": "task_requests",
+   "axis": "tokens",
+   "label": "Model requests for the fixed task (incl. auxiliary)",
+   "unit": "",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "task_net_out_kib",
+   "axis": "governance",
+   "label": "Non-model network upload during the fixed task (lower bound)",
+   "unit": "KiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "task_canary_leaks",
+   "axis": "governance",
+   "label": "Planted secrets (.env, ~/.aws, env var) found in model requests",
+   "unit": "",
+   "better": "lower",
+   "headline": false,
+   "note": "count of requests containing a planted secret string"
+  },
+  {
+   "id": "fleet_agents_per_gib",
+   "axis": "fleet",
+   "label": "Idle agents per GiB of RAM (private RAM)",
+   "unit": "agents/GiB",
+   "better": "higher",
+   "headline": false,
+   "note": "1024 / idle private MiB per agent (terminal included); rank only results with comparable=true (same N and hold for every harness, see fleet_comparable)"
+  },
+  {
+   "id": "after_work_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per agent right after its work turn (incl. terminal)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false,
+   "note": "cgroup anon / N right after every agent's work turn (20 x 16 KB tool outputs + ~3 KB streamed markdown report)"
+  },
+  {
+   "id": "idle_300s_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per agent 5 min after work (incl. terminal)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "idle_3600s_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per agent 60 min after work (incl. terminal)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "harness_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per idle agent, harness processes only (Pss_Anon)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false,
+   "note": "sum of smaps_rollup Pss_Anon over harness processes / N at the end of the hold"
+  },
+  {
+   "id": "terminal_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per idle agent, terminal share (tmux, Pss_Anon)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false,
+   "note": "Pss_Anon of the private tmux server / N; a GUI terminal costs more (kitty measured at ~29 MiB per window on the same host)"
+  },
+  {
+   "id": "tool_children_anon_mib",
+   "axis": "resources",
+   "label": "Peak private RAM of tool child processes (whole fleet)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false,
+   "note": "peak Pss_Anon of every process that is neither harness nor terminal (shells, python, cat...), whole fleet"
+  },
+  {
+   "id": "work_peak_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Peak private RAM per agent from launch to the start of the idle hold, harness only (Pss_Anon)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "burst_cpu_s_per_agent",
+   "axis": "resources",
+   "label": "CPU per agent when all N agents run a 3-step turn at once",
+   "unit": "s",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "burst_turn_s_p50",
+   "axis": "fleet",
+   "label": "Median turn time when all N agents work at once (mock model, constant latency)",
+   "unit": "s",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "burst_turn_s_p90",
+   "axis": "fleet",
+   "label": "p90 turn time when all N agents work at once",
+   "unit": "s",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "burst_turn_inflation",
+   "axis": "fleet",
+   "label": "Turn-time inflation vs one agent alone (p50 at N / p50 at N=1)",
+   "unit": "x",
+   "better": "lower",
+   "headline": false,
+   "note": "mock latency is constant, so this is harness-side CPU and scheduling only, not model contention"
+  },
+  {
+   "id": "resumed_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per agent after resuming a real-size session in the TUI",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false,
+   "note": "session grown headless to session_mb (16 KB tool outputs), harness killed, resumed with its own --continue in a tmux TUI; read 30 s after resume"
+  },
+  {
+   "id": "resumed_after_turn_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per agent after one turn in a resumed real-size session",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "resumed_idle_300s_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Private RAM per agent 5 min after a turn in a resumed real-size session",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "resumed_peak_anon_mib_per_agent",
+   "axis": "resources",
+   "label": "Peak private RAM per agent, resumed real-size session (resume + turn + idle)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "marathon_idle_anon_mib",
+   "axis": "resources",
+   "label": "Private RAM, one agent idle after 300 tool turns (~1M tokens, default compaction)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false,
+   "note": "one agent; 300 x 16 KB tool outputs; the harness's own default compaction (count in compactions); read after 5 min idle"
+  },
+  {
+   "id": "marathon_peak_anon_mib",
+   "axis": "resources",
+   "label": "Peak private RAM during 300 tool turns (~1M tokens, default compaction)",
+   "unit": "MiB",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "fleet_max_agents_reached",
+   "axis": "fleet",
+   "label": "Largest fleet that started and survived the hold (tried up to 50)",
+   "unit": "agents",
+   "better": "higher",
+   "headline": false,
+   "note": "largest N where all agents finished their first turn and stayed alive through the hold"
+  },
+  {
+   "id": "crash_kill9_recovered_alone",
+   "axis": "reliability",
+   "label": "Crash (kill9): turn finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": true
+  },
+  {
+   "id": "crash_kill9_double_execution",
+   "axis": "reliability",
+   "label": "Crash (kill9): interrupted command left running and re-run",
+   "unit": "rate",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "crash_scope_recovered_alone",
+   "axis": "reliability",
+   "label": "Crash (scope): turn finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false
+  },
+  {
+   "id": "crash_scope_double_execution",
+   "axis": "reliability",
+   "label": "Crash (scope): interrupted command left running and re-run",
+   "unit": "rate",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "crash_term_recovered_alone",
+   "axis": "reliability",
+   "label": "Crash (term): turn finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false
+  },
+  {
+   "id": "crash_term_double_execution",
+   "axis": "reliability",
+   "label": "Crash (term): interrupted command left running and re-run",
+   "unit": "rate",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "crash_stream_recovered_alone",
+   "axis": "reliability",
+   "label": "Crash (stream): turn finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false
+  },
+  {
+   "id": "crash_stream_double_execution",
+   "axis": "reliability",
+   "label": "Crash (stream): interrupted command left running and re-run",
+   "unit": "rate",
+   "better": "lower",
+   "headline": false
+  },
+  {
+   "id": "fault_429x3_done_alone",
+   "axis": "reliability",
+   "label": "Fault: 429 \u00d73: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": true,
+   "in_totals": true
+  },
+  {
+   "id": "fault_429-60s_done_alone",
+   "axis": "reliability",
+   "label": "Fault: 429 for 60 s: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_529x3_done_alone",
+   "axis": "reliability",
+   "label": "Fault: 529 overloaded \u00d73: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_500x3_done_alone",
+   "axis": "reliability",
+   "label": "Fault: 500 \u00d73: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_401-60s_done_alone",
+   "axis": "reliability",
+   "label": "Fault: 401 invalid key for 60 s: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_reset-30s_done_alone",
+   "axis": "reliability",
+   "label": "Fault: connection reset for 30 s: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_hang-30s_done_alone",
+   "axis": "reliability",
+   "label": "Fault: server silent for 30 s: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_truncate_done_alone",
+   "axis": "reliability",
+   "label": "Fault: stream cut mid-answer: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": true,
+   "in_totals": true
+  },
+  {
+   "id": "fault_stall-60s_done_alone",
+   "axis": "reliability",
+   "label": "Fault: stream stalls 60 s: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_trickle_done_alone",
+   "axis": "reliability",
+   "label": "Fault: stream trickles 1 event / 5 s: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_sse-error_done_alone",
+   "axis": "reliability",
+   "label": "Fault: provider error event mid-stream: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_malformed_done_alone",
+   "axis": "reliability",
+   "label": "Fault: malformed stream event: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_tool-hang_done_alone",
+   "axis": "reliability",
+   "label": "Fault: command never returns: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_tool-huge_done_alone",
+   "axis": "reliability",
+   "label": "Fault: 50 MB / 10 MB / binary command output: finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "in_totals": true
+  },
+  {
+   "id": "fault_loop-3min_done_alone",
+   "axis": "reliability",
+   "label": "Fault: model never ends its turn (3 min): finished without user action",
+   "unit": "rate",
+   "better": "higher",
+   "headline": false,
+   "note": "success = the harness ends the runaway turn by itself before the 3-min timeout (step cap or loop detection: Crush and Gemini CLI stop after a few identical tool calls); in_totals=false",
+   "in_totals": false
+  }
+ ],
+ "fault_labels": {
+  "429x3": "429 \u00d73",
+  "429-60s": "429 for 60 s",
+  "529x3": "529 overloaded \u00d73",
+  "500x3": "500 \u00d73",
+  "401-60s": "401 invalid key for 60 s",
+  "reset-30s": "connection reset for 30 s",
+  "hang-30s": "server silent for 30 s",
+  "truncate": "stream cut mid-answer",
+  "stall-60s": "stream stalls 60 s",
+  "trickle": "stream trickles 1 event / 5 s",
+  "sse-error": "provider error event mid-stream",
+  "malformed": "malformed stream event",
+  "tool-hang": "command never returns",
+  "tool-huge": "50 MB / 10 MB / binary command output",
+  "loop-3min": "model never ends its turn (3 min)"
+ },
+ "results": [
+  {
+   "harness": "aa",
+   "metric": "task_anon_mib",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 3.4,
+   "min": 3.4,
+   "max": 3.4,
+   "values": [
+    3.4,
+    3.4,
+    3.4,
+    3.4,
+    3.4
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "task_rss_mib",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 14.1,
+   "min": 13.9,
+   "max": 14.2,
+   "values": [
+    14.1,
+    14.1,
+    13.9,
+    14.2,
+    14.0
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "task_cpu_s",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 0.09,
+   "min": 0.09,
+   "max": 0.1,
+   "values": [
+    0.1,
+    0.1,
+    0.09,
+    0.09,
+    0.09
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "task_first_request_s",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 0.059,
+   "min": 0.054,
+   "max": 0.065,
+   "values": [
+    0.065,
+    0.061,
+    0.059,
+    0.054,
+    0.059
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "first_request_kib",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 5.011,
+   "min": 5.011,
+   "max": 5.011,
+   "values": [
+    5.011,
+    5.011,
+    5.011,
+    5.011,
+    5.011
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "task_uncached_ktok",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 5.733,
+   "min": 5.733,
+   "max": 5.733,
+   "values": [
+    5.733,
+    5.733,
+    5.733,
+    5.733,
+    5.733
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "task_requests",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 4,
+   "min": 4,
+   "max": 4,
+   "values": [
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "task_net_out_kib",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 0.524,
+   "min": 0.524,
+   "max": 0.524,
+   "values": [
+    0.524,
+    0.524,
+    0.524,
+    0.524,
+    0.524
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "task_canary_leaks",
+   "n_agents": 1,
+   "runs": 5,
+   "median": 0,
+   "min": 0,
+   "max": 0,
+   "values": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "source": "task-20261116-200219"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_kill9_recovered_alone",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_kill9_double_execution",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_scope_recovered_alone",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_scope_double_execution",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_term_recovered_alone",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_term_double_execution",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_stream_recovered_alone",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "crash_stream_double_execution",
+   "n_agents": 1,
+   "runs": 3,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "source": "crash-20261116-200258"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_429x3_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_429-60s_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_529x3_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_500x3_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_401-60s_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_reset-30s_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_hang-30s_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_truncate_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_stall-60s_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_trickle_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_sse-error_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_malformed_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_tool-hang_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_tool-huge_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 1.0,
+   "min": 1.0,
+   "max": 1.0,
+   "values": [
+    1.0,
+    1.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "fault_loop-3min_done_alone",
+   "n_agents": 1,
+   "runs": 2,
+   "median": 0.0,
+   "min": 0.0,
+   "max": 0.0,
+   "values": [
+    0.0,
+    0.0
+   ],
+   "source": "fault-20261116-201017"
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_anon_mib_per_agent",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 6.6,
+   "min": 6.6,
+   "max": 6.6,
+   "values": [
+    6.6
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_cpu_s_per_agent_hour",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 1.2,
+   "min": 1.2,
+   "max": 1.2,
+   "values": [
+    1.2
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_net_out_kib_per_agent_hour",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 18.879,
+   "min": 18.879,
+   "max": 18.879,
+   "values": [
+    18.879
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "disk_state_mib",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 0.6,
+   "min": 0.6,
+   "max": 0.6,
+   "values": [
+    0.6
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "fleet_agents_per_gib",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 155.152,
+   "min": 155.152,
+   "max": 155.152,
+   "values": [
+    155.152
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "after_work_anon_mib_per_agent",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 6.9,
+   "min": 6.9,
+   "max": 6.9,
+   "values": [
+    6.9
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "harness_anon_mib_per_agent",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 5.1,
+   "min": 5.1,
+   "max": 5.1,
+   "values": [
+    5.1
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "terminal_anon_mib_per_agent",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 1.4,
+   "min": 1.4,
+   "max": 1.4,
+   "values": [
+    1.4
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "tool_children_anon_mib",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 0.1,
+   "min": 0.1,
+   "max": 0.1,
+   "values": [
+    0.1
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "work_peak_anon_mib_per_agent",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 5.5,
+   "min": 5.5,
+   "max": 5.5,
+   "values": [
+    5.5
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_300s_anon_mib_per_agent",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 6.6,
+   "min": 6.6,
+   "max": 6.6,
+   "values": [
+    6.6
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_cpu_s_per_agent",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 0.07,
+   "min": 0.07,
+   "max": 0.07,
+   "values": [
+    0.07
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_s_p50",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 5.69,
+   "min": 5.69,
+   "max": 5.69,
+   "values": [
+    5.69
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_s_p90",
+   "n_agents": 1,
+   "runs": 1,
+   "median": 5.69,
+   "min": 5.69,
+   "max": 5.69,
+   "values": [
+    5.69
+   ],
+   "source": "idle-aa-1-hblong-tmux-20261116-203252",
+   "hold_s": 300
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_anon_mib_per_agent",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 0.75,
+   "min": 0.75,
+   "max": 0.75,
+   "values": [
+    0.75
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_cpu_s_per_agent_hour",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 0.18,
+   "min": 0.18,
+   "max": 0.18,
+   "values": [
+    0.18
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_net_out_kib_per_agent_hour",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 1.678,
+   "min": 1.678,
+   "max": 1.678,
+   "values": [
+    1.678
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "disk_state_mib",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 4.5,
+   "min": 4.5,
+   "max": 4.5,
+   "values": [
+    4.5
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "fleet_agents_per_gib",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 1365.333,
+   "min": 1365.333,
+   "max": 1365.333,
+   "values": [
+    1365.333
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "after_work_anon_mib_per_agent",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 1.38,
+   "min": 1.38,
+   "max": 1.38,
+   "values": [
+    1.38
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "harness_anon_mib_per_agent",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 0.61,
+   "min": 0.61,
+   "max": 0.61,
+   "values": [
+    0.61
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "terminal_anon_mib_per_agent",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 0.14,
+   "min": 0.14,
+   "max": 0.14,
+   "values": [
+    0.14
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "tool_children_anon_mib",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 0.1,
+   "min": 0.1,
+   "max": 0.1,
+   "values": [
+    0.1
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "work_peak_anon_mib_per_agent",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 1.43,
+   "min": 1.43,
+   "max": 1.43,
+   "values": [
+    1.43
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_300s_anon_mib_per_agent",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 0.75,
+   "min": 0.75,
+   "max": 0.75,
+   "values": [
+    0.75
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900,
+   "comparable": false
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_cpu_s_per_agent",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 0.051,
+   "min": 0.051,
+   "max": 0.051,
+   "values": [
+    0.051
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_s_p50",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 5.74,
+   "min": 5.74,
+   "max": 5.74,
+   "values": [
+    5.74
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_s_p90",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 5.76,
+   "min": 5.76,
+   "max": 5.76,
+   "values": [
+    5.76
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_anon_mib_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.22,
+   "min": 0.22,
+   "max": 0.22,
+   "values": [
+    0.22
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600,
+   "comparable": true
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_cpu_s_per_agent_hour",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.113,
+   "min": 0.113,
+   "max": 0.113,
+   "values": [
+    0.113
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600,
+   "comparable": true
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_net_out_kib_per_agent_hour",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.325,
+   "min": 0.325,
+   "max": 0.325,
+   "values": [
+    0.325
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600,
+   "comparable": true
+  },
+  {
+   "harness": "aa",
+   "metric": "disk_state_mib",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 22.8,
+   "min": 22.8,
+   "max": 22.8,
+   "values": [
+    22.8
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600,
+   "comparable": true
+  },
+  {
+   "harness": "aa",
+   "metric": "fleet_agents_per_gib",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 4654.545,
+   "min": 4654.545,
+   "max": 4654.545,
+   "values": [
+    4654.545
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600,
+   "comparable": true
+  },
+  {
+   "harness": "aa",
+   "metric": "after_work_anon_mib_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.404,
+   "min": 0.404,
+   "max": 0.404,
+   "values": [
+    0.404
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "harness_anon_mib_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.192,
+   "min": 0.192,
+   "max": 0.192,
+   "values": [
+    0.192
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "terminal_anon_mib_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.026,
+   "min": 0.026,
+   "max": 0.026,
+   "values": [
+    0.026
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "tool_children_anon_mib",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.7,
+   "min": 0.7,
+   "max": 0.7,
+   "values": [
+    0.7
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "work_peak_anon_mib_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.668,
+   "min": 0.668,
+   "max": 0.668,
+   "values": [
+    0.668
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_300s_anon_mib_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.218,
+   "min": 0.218,
+   "max": 0.218,
+   "values": [
+    0.218
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600,
+   "comparable": true
+  },
+  {
+   "harness": "aa",
+   "metric": "idle_3600s_anon_mib_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.22,
+   "min": 0.22,
+   "max": 0.22,
+   "values": [
+    0.22
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600,
+   "comparable": true
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_cpu_s_per_agent",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 0.071,
+   "min": 0.071,
+   "max": 0.071,
+   "values": [
+    0.071
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_s_p50",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 5.93,
+   "min": 5.93,
+   "max": 5.93,
+   "values": [
+    5.93
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_s_p90",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 6.08,
+   "min": 6.08,
+   "max": 6.08,
+   "values": [
+    6.08
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_inflation",
+   "n_agents": 10,
+   "runs": 1,
+   "median": 1.009,
+   "min": 1.009,
+   "max": 1.009,
+   "values": [
+    1.009
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725",
+   "hold_s": 900
+  },
+  {
+   "harness": "aa",
+   "metric": "burst_turn_inflation",
+   "n_agents": 50,
+   "runs": 1,
+   "median": 1.042,
+   "min": 1.042,
+   "max": 1.042,
+   "values": [
+    1.042
+   ],
+   "source": "idle-aa-50-hblong-tmux-20261116-211404",
+   "hold_s": 3600
+  },
+  {
+   "harness": "aa",
+   "metric": "fleet_max_agents_reached",
+   "n_agents": 200,
+   "runs": 1,
+   "median": 50,
+   "min": 50,
+   "max": 50,
+   "values": [
+    50
+   ],
+   "source": "idle-aa-10-hblong-tmux-20261116-205725,idle-aa-50-hblong-tmux-20261116-211404"
+  }
+ ]
+}

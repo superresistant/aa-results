@@ -1,0 +1,385 @@
+{
+ "meta": {
+  "git_commit": "016cf65",
+  "git_dirty": false,
+  "mock_sha256": "05de4b8477469f42",
+  "aa_sha256": "baeba55387cb9e04",
+  "aa_commit": "1910537",
+  "versions": {
+   "aa": "1910537",
+   "claude": "claude-code 2.1.318",
+   "codex": "codex-cli 0.167.0 (npm), default model gpt-6.1-sol",
+   "opencode": "opencode 1.19.5",
+   "pi": "1.4.0 (npm @earendil-works/pi-coding-agent)",
+   "crush": "crush 0.101.0",
+   "goose": "goose 1.59.1",
+   "gemini": "gemini-cli 0.68.0"
+  },
+  "flags": {
+   "claude": "-p/--dangerously-skip-permissions, --model; ANTHROPIC_BASE_URL+ANTHROPIC_API_KEY; .claude.json onboarding/trust/api-key pre-accepted",
+   "codex": "custom model_provider (base_url, env_key, wire_api=responses); sandbox_mode=workspace-write; projects trusted; exec --skip-git-repo-check",
+   "opencode": "provider.anthropic.options baseURL+apiKey; model anthropic/claude-sonnet-5-5",
+   "pi": "models.json anthropic baseUrl+key; settings defaultProvider/defaultModel",
+   "crush": "crushrc: provider add (type messages, base-url, dummy key) + model add; -y (yolo); -m model; XDG_RUNTIME_DIR private; project-init dialog pre-dismissed (.crush/init); Go binary run directly, not the npm node wrapper",
+   "goose": "GOOSE_PROVIDER=anthropic, GOOSE_MODEL, ANTHROPIC_HOST+ANTHROPIC_API_KEY, GOOSE_DISABLE_KEYRING=1, GOOSE_MODE=auto; telemetry consent pre-answered with its default (yes)",
+   "gemini": "settings security.auth.selectedType=gemini-api-key; GEMINI_API_KEY dummy + GOOGLE_GEMINI_BASE_URL; -y (yolo), --skip-trust; trustedFolders",
+   "aa": "serve --idle-sleep 300 (aa.service default); isolated state/agent dir; models.json anthropic.baseUrl+dummy key; settings defaultModel; HL_BUILTIN_MODELS=/dev/null (catalog from models-store only); PI_BUS_NO_NOTIFY=1, notify-send/systemctl stubs (no desktop side effects)"
+  },
+  "argv": [
+   "hb.py",
+   "task",
+   "--runs",
+   "5",
+   "--harness",
+   "aa",
+   "--port",
+   "19700"
+  ],
+  "hb_slices_active": [
+   "batch-hb.slice",
+   "batch-hbidlegoose40870.slice"
+  ],
+  "started": "2026-11-16T20:02:20+0100"
+ },
+ "complete": true,
+ "host": {
+  "loadavg": [
+   "2.34",
+   "4.08",
+   "2.76"
+  ],
+  "meminfo_kib": {
+   "MemTotal": 65774620,
+   "MemAvailable": 45551880,
+   "SwapTotal": 8388604,
+   "SwapFree": 8388604
+  },
+  "nproc": 16,
+  "kernel": "7.0.0-43-generic"
+ },
+ "ttft_ms": 1700,
+ "ttft_per_ktok_ms": 20.0,
+ "tps": 120,
+ "rows": [
+  {
+   "harness": "aa",
+   "run": 0,
+   "tag": "aa-task-0",
+   "rc": 0,
+   "wall_s": 7.55,
+   "success": true,
+   "t_first_request_s": 0.065,
+   "t_first_turn_request_s": 0.065,
+   "t_final_request_s": 5.705,
+   "t_done_s": 7.541,
+   "harness_gaps_ms": [
+    13,
+    13,
+    33
+   ],
+   "leftover_procs": 1,
+   "cg_memory_peak_mib": 10.1,
+   "cpu_s": 0.1,
+   "cpu_user_s": 0.04,
+   "cpu_system_s": 0.05,
+   "max_pss_anon_mib": 3.5,
+   "max_pss_mib": 8.2,
+   "max_rss_mib": 14.1,
+   "max_anon_mib": 3.4,
+   "max_nproc": 3,
+   "canary_in_requests": {
+    "workspace_dotenv": 0,
+    "home_aws": 0,
+    "env_var": 0
+   },
+   "requests": 4,
+   "turn_requests": 4,
+   "aux_requests": 0,
+   "count_token_calls": 0,
+   "input_bytes": 22925,
+   "est_input_tokens": 5733,
+   "est_output_tokens": 61,
+   "est_cached_tokens": 0,
+   "est_uncached_tokens": 5733,
+   "aux_bytes": 0,
+   "gave_up": 0,
+   "first_request_bytes": 5131,
+   "first_request_est_tokens": 1283,
+   "first_sys_chars": 1246,
+   "first_tools_n": 6,
+   "first_tools_chars": 3356,
+   "cache_marks_first": 3,
+   "injected_429": 0,
+   "aux_kinds": [],
+   "t_socket_ready_s": 0.022,
+   "net": {
+    "connections": 1,
+    "bytes_sent": 537,
+    "bytes_received": 15162,
+    "peers": {
+     "3.164.85.36": {
+      "connections": 1,
+      "sent": 537,
+      "received": 15162
+     }
+    }
+   }
+  },
+  {
+   "harness": "aa",
+   "run": 1,
+   "tag": "aa-task-1",
+   "rc": 0,
+   "wall_s": 7.54,
+   "success": true,
+   "t_first_request_s": 0.061,
+   "t_first_turn_request_s": 0.061,
+   "t_final_request_s": 5.698,
+   "t_done_s": 7.533,
+   "harness_gaps_ms": [
+    12,
+    16,
+    33
+   ],
+   "leftover_procs": 1,
+   "cg_memory_peak_mib": 9.8,
+   "cpu_s": 0.1,
+   "cpu_user_s": 0.05,
+   "cpu_system_s": 0.04,
+   "max_pss_anon_mib": 3.4,
+   "max_pss_mib": 8.2,
+   "max_rss_mib": 14.1,
+   "max_anon_mib": 3.4,
+   "max_nproc": 4,
+   "canary_in_requests": {
+    "workspace_dotenv": 0,
+    "home_aws": 0,
+    "env_var": 0
+   },
+   "requests": 4,
+   "turn_requests": 4,
+   "aux_requests": 0,
+   "count_token_calls": 0,
+   "input_bytes": 22925,
+   "est_input_tokens": 5733,
+   "est_output_tokens": 61,
+   "est_cached_tokens": 0,
+   "est_uncached_tokens": 5733,
+   "aux_bytes": 0,
+   "gave_up": 0,
+   "first_request_bytes": 5131,
+   "first_request_est_tokens": 1283,
+   "first_sys_chars": 1246,
+   "first_tools_n": 6,
+   "first_tools_chars": 3356,
+   "cache_marks_first": 3,
+   "injected_429": 0,
+   "aux_kinds": [],
+   "t_socket_ready_s": 0.021,
+   "net": {
+    "connections": 1,
+    "bytes_sent": 537,
+    "bytes_received": 15162,
+    "peers": {
+     "3.164.85.127": {
+      "connections": 1,
+      "sent": 537,
+      "received": 15162
+     }
+    }
+   }
+  },
+  {
+   "harness": "aa",
+   "run": 2,
+   "tag": "aa-task-2",
+   "rc": 0,
+   "wall_s": 7.53,
+   "success": true,
+   "t_first_request_s": 0.059,
+   "t_first_turn_request_s": 0.059,
+   "t_final_request_s": 5.691,
+   "t_done_s": 7.525,
+   "harness_gaps_ms": [
+    13,
+    15,
+    33
+   ],
+   "leftover_procs": 1,
+   "cg_memory_peak_mib": 10.4,
+   "cpu_s": 0.09,
+   "cpu_user_s": 0.05,
+   "cpu_system_s": 0.05,
+   "max_pss_anon_mib": 3.4,
+   "max_pss_mib": 8.2,
+   "max_rss_mib": 13.9,
+   "max_anon_mib": 3.4,
+   "max_nproc": 4,
+   "canary_in_requests": {
+    "workspace_dotenv": 0,
+    "home_aws": 0,
+    "env_var": 0
+   },
+   "requests": 4,
+   "turn_requests": 4,
+   "aux_requests": 0,
+   "count_token_calls": 0,
+   "input_bytes": 22925,
+   "est_input_tokens": 5733,
+   "est_output_tokens": 61,
+   "est_cached_tokens": 0,
+   "est_uncached_tokens": 5733,
+   "aux_bytes": 0,
+   "gave_up": 0,
+   "first_request_bytes": 5131,
+   "first_request_est_tokens": 1283,
+   "first_sys_chars": 1246,
+   "first_tools_n": 6,
+   "first_tools_chars": 3356,
+   "cache_marks_first": 3,
+   "injected_429": 0,
+   "aux_kinds": [],
+   "t_socket_ready_s": 0.021,
+   "net": {
+    "connections": 1,
+    "bytes_sent": 537,
+    "bytes_received": 15232,
+    "peers": {
+     "3.164.85.127": {
+      "connections": 1,
+      "sent": 537,
+      "received": 15232
+     }
+    }
+   }
+  },
+  {
+   "harness": "aa",
+   "run": 3,
+   "tag": "aa-task-3",
+   "rc": 0,
+   "wall_s": 7.52,
+   "success": true,
+   "t_first_request_s": 0.054,
+   "t_first_turn_request_s": 0.054,
+   "t_final_request_s": 5.68,
+   "t_done_s": 7.515,
+   "harness_gaps_ms": [
+    12,
+    13,
+    33
+   ],
+   "leftover_procs": 1,
+   "cg_memory_peak_mib": 10.6,
+   "cpu_s": 0.09,
+   "cpu_user_s": 0.05,
+   "cpu_system_s": 0.04,
+   "max_pss_anon_mib": 3.5,
+   "max_pss_mib": 8.2,
+   "max_rss_mib": 14.2,
+   "max_anon_mib": 3.4,
+   "max_nproc": 3,
+   "canary_in_requests": {
+    "workspace_dotenv": 0,
+    "home_aws": 0,
+    "env_var": 0
+   },
+   "requests": 4,
+   "turn_requests": 4,
+   "aux_requests": 0,
+   "count_token_calls": 0,
+   "input_bytes": 22925,
+   "est_input_tokens": 5733,
+   "est_output_tokens": 61,
+   "est_cached_tokens": 0,
+   "est_uncached_tokens": 5733,
+   "aux_bytes": 0,
+   "gave_up": 0,
+   "first_request_bytes": 5131,
+   "first_request_est_tokens": 1283,
+   "first_sys_chars": 1246,
+   "first_tools_n": 6,
+   "first_tools_chars": 3356,
+   "cache_marks_first": 3,
+   "injected_429": 0,
+   "aux_kinds": [],
+   "t_socket_ready_s": 0.031,
+   "net": {
+    "connections": 1,
+    "bytes_sent": 537,
+    "bytes_received": 15158,
+    "peers": {
+     "3.164.85.36": {
+      "connections": 1,
+      "sent": 537,
+      "received": 15158
+     }
+    }
+   }
+  },
+  {
+   "harness": "aa",
+   "run": 4,
+   "tag": "aa-task-4",
+   "rc": 0,
+   "wall_s": 7.53,
+   "success": true,
+   "t_first_request_s": 0.059,
+   "t_first_turn_request_s": 0.059,
+   "t_final_request_s": 5.69,
+   "t_done_s": 7.524,
+   "harness_gaps_ms": [
+    12,
+    13,
+    33
+   ],
+   "leftover_procs": 1,
+   "cg_memory_peak_mib": 10.4,
+   "cpu_s": 0.09,
+   "cpu_user_s": 0.05,
+   "cpu_system_s": 0.04,
+   "max_pss_anon_mib": 3.4,
+   "max_pss_mib": 8.2,
+   "max_rss_mib": 14.0,
+   "max_anon_mib": 3.4,
+   "max_nproc": 4,
+   "canary_in_requests": {
+    "workspace_dotenv": 0,
+    "home_aws": 0,
+    "env_var": 0
+   },
+   "requests": 4,
+   "turn_requests": 4,
+   "aux_requests": 0,
+   "count_token_calls": 0,
+   "input_bytes": 22925,
+   "est_input_tokens": 5733,
+   "est_output_tokens": 61,
+   "est_cached_tokens": 0,
+   "est_uncached_tokens": 5733,
+   "aux_bytes": 0,
+   "gave_up": 0,
+   "first_request_bytes": 5131,
+   "first_request_est_tokens": 1283,
+   "first_sys_chars": 1246,
+   "first_tools_n": 6,
+   "first_tools_chars": 3356,
+   "cache_marks_first": 3,
+   "injected_429": 0,
+   "aux_kinds": [],
+   "t_socket_ready_s": 0.021,
+   "net": {
+    "connections": 1,
+    "bytes_sent": 537,
+    "bytes_received": 15203,
+    "peers": {
+     "3.164.85.8": {
+      "connections": 1,
+      "sent": 537,
+      "received": 15203
+     }
+    }
+   }
+  }
+ ]
+}

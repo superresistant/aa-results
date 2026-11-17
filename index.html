@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>aa: agent harness measurements</title>
+<style>
+body { font-family: Inter, -apple-system, "Segoe UI", sans-serif; max-width: 860px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.55; font-size: 16px; }
+h1 { font-size: 28px; margin-bottom: 4px; }
+.sub { color: #555; margin-top: 0; }
+h2 { font-size: 18px; margin-top: 36px; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 12px 0; }
+th, td { padding: 6px 8px; border-bottom: 1px solid #e3e3e3; text-align: right; }
+th:first-child, td:first-child { text-align: left; }
+th { font-weight: 600; border-bottom: 1px solid #999; }
+td.aa, th.aa { background: #f4f6f8; font-weight: 600; }
+ol li { margin-bottom: 6px; }
+.small { font-size: 14px; color: #555; }
+a { color: #1a4fa0; }
+</style></head><body>
+
+<h1>aa</h1>
+<p class="sub">An agent harness that runs a fleet of always-on agents in one daemon.</p>
+
+<p>aa runs 200+ agents in parallel every day for two companies. These are its measurements with the AgentRAMBench runner, next to the published figures for other harnesses.</p>
+
+<h2>Results</h2>
+<table>
+<tr><th>Median</th><th class="aa">aa</th><th>Claude Code</th><th>Codex CLI</th><th>Pi</th><th>opencode</th></tr>
+<tr><td>Idle RAM per agent, 50 agents, after 1 h (MiB)</td><td class="aa">0.22</td><td>145</td><td>28.4</td><td>105.6</td><td>526 (N=25)</td></tr>
+<tr><td>Idle RAM per agent, 10 agents (MiB)</td><td class="aa">0.75</td><td>146</td><td>36.5</td><td>105.8</td><td>557</td></tr>
+<tr><td>RAM per agent after work, 50 agents (MiB)</td><td class="aa">0.40</td><td>204</td><td>31.7</td><td>104</td><td>–</td></tr>
+<tr><td>Agents per GiB, 50 agents</td><td class="aa">4655</td><td>7</td><td>39</td><td>9.7</td><td>–</td></tr>
+<tr><td>Idle CPU per agent, 50 agents (s/h)</td><td class="aa">0.11</td><td>11.0</td><td>0.35</td><td>0.011</td><td>–</td></tr>
+<tr><td>Coding task, private RAM (MiB)</td><td class="aa">3.4</td><td>140</td><td>36.4</td><td>71.7</td><td>398</td></tr>
+<tr><td>kill -9 mid-tool: finishes on its own</td><td class="aa">3/3</td><td>0/3</td><td>0/3</td><td>0/3</td><td>0/3</td></tr>
+<tr><td>kill -9 mid-tool: runs the command twice</td><td class="aa">0/3</td><td>3/3</td><td>0/3</td><td>3/3</td><td>3/3</td></tr>
+<tr><td>Network and provider faults handled alone (14 kinds × 2 runs)</td><td class="aa">22/28</td><td>28/28</td><td>22/28</td><td>18/28</td><td>22/28</td></tr>
+</table>
+<p class="small">aa also finishes on its own after a scope kill, a terminal death and a stream crash (3/3 each); the others do not, except Codex after a terminal death. aa fails three fault profiles: a 401 lasting 60 s, a connection reset lasting 30 s, and a malformed response. Pi uses less idle CPU than aa.</p>
+
+<h2>How to read it</h2>
+<ol>
+<li>aa is one daemon holding all agents, with one terminal client attached in the measured tmux. The other harnesses run one full process per agent, each in its own pane. With one client per agent, add about 1.4 MiB per agent.</li>
+<li>Sessions idle for 300 s sleep inside the daemon (aa's default). The 1 h figure measures sleeping sessions; the other harnesses have no equivalent mode.</li>
+<li>The task, crash and fault tests drive aa headless through its local socket, as the others run headless (<code>claude -p</code>, <code>codex exec</code>, <code>opencode run</code>).</li>
+<li>All tests use a local mock model, tmux and default settings. No real model or API is called.</li>
+<li>aa is closed source. The adapter and binary are not public, so these aa figures cannot be reproduced by third parties; the method, runner and comparison figures can be checked.</li>
+<li>Same mock, scenarios and machine as the edition, on a different day. One run per idle point, three per crash test, two per fault profile, five for the task.</li>
+</ol>
+
+<h2>Method</h2>
+<p>Measured with the AgentRAMBench runner (<a href="https://github.com/agentrambench/bench">github.com/agentrambench/bench</a>, measured with commit ef0dbb2, measurement code identical to the final edition's a8e5273), following the method of <a href="https://agentrambench.com/editions/2026-11/">AgentRAMBench edition 2026-11</a> (final, frozen 17 Nov 2026). Comparison figures from that edition (<a href="https://agentrambench.com/resources/#idle_3600s_anon_mib_per_agent">RAM</a>, <a href="https://agentrambench.com/resources/#idle_cpu_s_per_agent_hour">CPU</a>, <a href="https://agentrambench.com/failures/#crash_kill9_recovered_alone">kill -9</a>). The aa run was done on 16 Nov 2026 by the author of aa, not by AgentRAMBench, on a 16-core, 64 GB Linux desktop. Raw aa runs: <a href="https://github.com/superresistant/aa-results/tree/main/data">data/</a>.</p>
+<p class="small">Disclosure: the author of aa also maintains AgentRAMBench. aa is not part of the AgentRAMBench edition.</p>
+
+</body></html>
