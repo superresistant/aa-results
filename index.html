@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark">
 <title>aa: agent harness measurements</title>
 <style>
 body { font-family: Inter, -apple-system, "Segoe UI", sans-serif; max-width: 860px; margin: 40px auto; padding: 0 20px; color: #1a1a1a; line-height: 1.55; font-size: 16px; }
@@ -14,6 +14,16 @@ td.aa, th.aa { background: #f4f6f8; font-weight: 600; }
 ol li { margin-bottom: 6px; }
 .small { font-size: 14px; color: #555; }
 a { color: #1a4fa0; }
+html { color-scheme: light dark; background: #fff; }
+@media (prefers-color-scheme: dark) {
+  html { background: #16181b; }
+  body { color: #e6e6e6; }
+  .sub, .small { color: #a8adb3; }
+  th, td { border-bottom-color: #33373c; }
+  th { border-bottom-color: #6b7077; }
+  td.aa, th.aa { background: #23272c; }
+  a { color: #7fb0ff; }
+}
 </style></head><body>
 
 <h1>aa</h1>
