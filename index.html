@@ -32,9 +32,9 @@ a { color: #1a4fa0; }
 <tr><td>Coding task, private RAM (MiB)</td><td class="aa">3.4</td><td>140</td><td>36.4</td><td>71.7</td><td>398</td></tr>
 <tr><td>kill -9 mid-tool: finishes on its own</td><td class="aa">3/3</td><td>0/3</td><td>0/3</td><td>0/3</td><td>0/3</td></tr>
 <tr><td>kill -9 mid-tool: runs the command twice</td><td class="aa">0/3</td><td>3/3</td><td>0/3</td><td>3/3</td><td>3/3</td></tr>
-<tr><td>Network and provider faults handled alone (14 kinds × 2 runs)</td><td class="aa">22/28</td><td>28/28</td><td>22/28</td><td>18/28</td><td>22/28</td></tr>
+<tr><td>Network and provider faults handled alone (14 kinds × 2 runs)</td><td class="aa">28/28</td><td>28/28</td><td>22/28</td><td>18/28</td><td>22/28</td></tr>
 </table>
-<p class="small">aa also finishes on its own after a scope kill, a terminal death and a stream crash (3/3 each); the others do not, except Codex after a terminal death. aa fails three fault profiles: a 401 lasting 60 s, a connection reset lasting 30 s, and a malformed response. Pi uses less idle CPU than aa.</p>
+<p class="small">aa also finishes on its own after a scope kill, a terminal death and a stream crash (3/3 each); the others do not, except Codex after a terminal death. aa handles all 14 fault kinds alone since version 5a9d477c (24 Nov 2026); the 16 Nov run failed three (a 401 lasting 60 s, a connection reset lasting 30 s, a malformed response). Pi uses less idle CPU than aa.</p>
 
 <h2>How to read it</h2>
 <ol>
@@ -47,7 +47,7 @@ a { color: #1a4fa0; }
 </ol>
 
 <h2>Method</h2>
-<p>Measured with the AgentRAMBench runner (<a href="https://github.com/agentrambench/bench">github.com/agentrambench/bench</a>, measured with commit ef0dbb2, measurement code identical to the final edition's a8e5273), following the method of <a href="https://agentrambench.com/editions/2026-11/">AgentRAMBench edition 2026-11</a> (final, frozen 17 Nov 2026). Comparison figures from that edition (<a href="https://agentrambench.com/resources/#idle_3600s_anon_mib_per_agent">RAM</a>, <a href="https://agentrambench.com/resources/#idle_cpu_s_per_agent_hour">CPU</a>, <a href="https://agentrambench.com/failures/#crash_kill9_recovered_alone">kill -9</a>). The aa run was done on 16 Nov 2026 by the author of aa, not by AgentRAMBench, on a 16-core, 64 GB Linux desktop. Raw aa runs: <a href="https://github.com/superresistant/aa-results/tree/main/data">data/</a>.</p>
+<p>Measured with the AgentRAMBench runner (<a href="https://github.com/agentrambench/bench">github.com/agentrambench/bench</a>, measured with commit ef0dbb2, measurement code identical to the final edition's a8e5273), following the method of <a href="https://agentrambench.com/editions/2026-11/">AgentRAMBench edition 2026-11</a> (final, frozen 17 Nov 2026). Comparison figures from that edition (<a href="https://agentrambench.com/resources/#idle_3600s_anon_mib_per_agent">RAM</a>, <a href="https://agentrambench.com/resources/#idle_cpu_s_per_agent_hour">CPU</a>, <a href="https://agentrambench.com/failures/#crash_kill9_recovered_alone">kill -9</a>). The aa runs were done on 16 Nov 2026 (aa 1910537) and, for the fault row, on 24 Nov 2026 (aa 5a9d477c, same runner commit) by the author of aa, not by AgentRAMBench, on a 16-core, 64 GB Linux desktop. Raw aa runs: <a href="https://github.com/superresistant/aa-results/tree/main/data">data/</a>.</p>
 <p class="small">Disclosure: the author of aa also maintains AgentRAMBench. aa is not part of the AgentRAMBench edition.</p>
 
 </body></html>
